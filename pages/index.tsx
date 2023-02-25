@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <div className="flex grid min-h-screen flex-col gap-10 space-y-5 bg-slate-400 py-20 px-10 lg:grid-cols-2 xl:grid-cols-3 xl:place-content-center">
+    <div className="dark flex grid min-h-screen flex-col gap-10 space-y-5 bg-slate-400 py-20 px-10 lg:grid-cols-2 xl:grid-cols-3 xl:place-content-center">
       <div className="flex flex-col justify-between rounded-2xl bg-white p-6 shadow-lg dark:bg-black">
         <span className="text-2xl font-semibold dark:text-white">
           Select Item
