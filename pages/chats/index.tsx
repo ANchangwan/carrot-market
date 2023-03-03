@@ -1,6 +1,6 @@
 function Chats() {
   return (
-    <div className="divide-y-[1px] divide-red-400 py-10">
+    <div className="divide-y-[1px] py-10">
       {[...Array(6)].map((_, i) => (
         <div
           key={i}
