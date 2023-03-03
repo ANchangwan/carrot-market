@@ -3,7 +3,7 @@ function Community() {
     <div className="space-y-8 px-4 py-16">
       {[...Array(6)].map((_, i) => (
         <div key={i} className="flex cursor-pointer flex-col items-start">
-          <span className="itmes-center flex  rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
+          <span className="itmes-center ml-4 flex  rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
             동네질문
           </span>
           <span className="mt-2 text-gray-700">
