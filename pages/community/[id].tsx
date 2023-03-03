@@ -65,6 +65,7 @@ function CommunityPostDetail() {
             <p className="mt-2 text-gray-700">
               The best mandu restaurant is the one next to my house.
             </p>
+            <s></s>
           </div>
         </div>
         <div className="flex items-start space-x-3">
