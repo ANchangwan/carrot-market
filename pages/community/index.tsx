@@ -1,7 +1,7 @@
 import Layout from "./../../components/layout";
 function Community() {
   return (
-    <Layout title="동네생활">
+    <Layout hasTabBar title="동네생활">
       <div className="space-y-8 px-4 py-16">
         {[...Array(6)].map((_, i) => (
           <div key={i} className="flex cursor-pointer flex-col items-start">

@@ -21,7 +21,12 @@ export default function Layout({
   };
   return (
     <div>
-      <div className="fixed top-0 flex w-full max-w-xl items-center justify-center border-b bg-white py-3 text-lg font-medium text-gray-700">
+      <div
+        className={cls(
+          !canGoBack ? "justify-center" : "",
+          "fixed top-0 flex w-full max-w-xl items-center border-b bg-white py-3 text-lg font-medium text-gray-700"
+        )}
+      >
         {canGoBack ? (
           <button onClick={goBackRouter}>
             <svg

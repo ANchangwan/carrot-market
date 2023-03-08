@@ -1,7 +1,7 @@
 import Layout from "./../../components/layout";
 function Chats() {
   return (
-    <Layout title="Chat">
+    <Layout hasTabBar title="Chat">
       <div className="divide-y-[1px] py-10">
         {[...Array(6)].map((_, i) => (
           <div

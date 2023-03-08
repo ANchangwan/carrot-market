@@ -1,7 +1,7 @@
 import Layout from "./../../components/layout";
 function Profile() {
   return (
-    <Layout title="유저">
+    <Layout hasTabBar title="유저">
       <div className="py-10 px-4">
         <div className="flex items-center space-x-3">
           <div className="h-16 w-16 rounded-full bg-slate-500" />
