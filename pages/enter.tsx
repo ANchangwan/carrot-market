@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Button from "./../components/button";
 
 function cls(...classNames: string[]) {
   return classNames.join(" ");
@@ -67,10 +68,8 @@ export default function Enter() {
               </div>
             ) : null}
           </div>
-          <button className="mt-6 rounded-md border border-r-0 border-transparent bg-orange-500 py-2 px-4 text-sm  font-medium text-white shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
-            {method === "email" ? "Get login link" : null}
-            {method === "phone" ? "Get one-time password" : null}
-          </button>
+          {method === "email" ? <Button text="Get login link" /> : null}
+          {method === "phone" ? <Button text="Get one-time password" /> : null}
         </form>
         <div className="mt-8">
           <div className="relative">

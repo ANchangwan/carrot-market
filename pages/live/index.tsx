@@ -1,7 +1,7 @@
 import Layout from "./../../components/layout";
 function Live() {
   return (
-    <Layout title="Live">
+    <Layout hasTabBar title="Live">
       <div className="space-y-4 divide-y-4 py-10 px-4 ">
         {[...Array(10)].map((_, i) => (
           <div className="pt-4" key={i}>

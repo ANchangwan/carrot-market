@@ -2,7 +2,7 @@ import Layout from "./../../components/layout";
 function CommunityPostDetail() {
   return (
     <Layout canGoBack>
-      <div>
+      <div className="px-3">
         <span className="itmes-center my-2.5 ml-4 inline-flex  rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
           동네질문
         </span>
