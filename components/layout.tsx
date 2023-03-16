@@ -110,7 +110,7 @@ export default function Layout({
             </span>
           </Link>
           <Link href="/streams">
-            <span className="inline flex w-full flex-col items-center space-y-2">
+            <span className="flex w-full flex-col items-center space-y-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

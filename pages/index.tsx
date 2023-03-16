@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Layout from "./../components/layout";
 import { cls } from "./../libs/utls";
+import "../libs/client";
 
 export default function Home() {
   return (
