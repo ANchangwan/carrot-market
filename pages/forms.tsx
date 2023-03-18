@@ -2,12 +2,27 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function Forms() {
-  const { register, watch } = useForm();
+  const { register, handleSubmit } = useForm();
+  const onValid = () => {
+    console.log("유효");
+  };
   return (
-    <form>
-      <input {...register("username")} type="text" placeholder="Username" />
-      <input {...register("email")} type="email" placeholder="email" />
-      <input {...register("password")} type="password" placeholder="password" />
+    <form onSubmit={handleSubmit(onValid)}>
+      <input
+        {...register("username", { required: true })}
+        type="text"
+        placeholder="Username"
+      />
+      <input
+        {...(register("email"), { required: true })}
+        type="email"
+        placeholder="email"
+      />
+      <input
+        {...(register("password"), { required: true })}
+        type="password"
+        placeholder="password"
+      />
       <input {...register("submit")} type="submit" />
     </form>
   );
