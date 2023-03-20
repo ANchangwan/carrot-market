@@ -1,14 +1,28 @@
 import { useState } from "react";
 import Button from "./../components/button";
+import { useForm } from "react-hook-form";
+import { cls } from "./../libs/utls";
+import Input from "./../components/input";
 
-function cls(...classNames: string[]) {
-  return classNames.join(" ");
+interface EnterForm {
+  email?: string;
+  phone?: string;
 }
 
 export default function Enter() {
+  const { register, watch, reset, handleSubmit } = useForm<EnterForm>();
   const [method, setMethod] = useState<"email" | "phone">("email");
-  const onEmailClick = () => setMethod("email");
-  const onPhoneClick = () => setMethod("phone");
+  const onEmailClick = () => {
+    setMethod("email");
+    reset();
+  };
+  const onPhoneClick = () => {
+    reset();
+    setMethod("phone");
+  };
+  const onVaild = (data: EnterForm) => {
+    console.log(data);
+  };
   return (
     <div className="mt-16 px-4">
       <h3 className="text-center text-3xl font-bold">Enter to Carrot</h3>
@@ -40,14 +54,15 @@ export default function Enter() {
             </button>
           </div>
         </div>
-        <form className="mt-8 flex flex-col">
+        <form onSubmit={handleSubmit(onVaild)} className="mt-8 flex flex-col">
           <label htmlFor="input" className="text-sm font-medium text-gray-700">
             {method === "email" ? "Email address" : null}
             {method === "phone" ? "Phone number" : null}
           </label>
           <div className="mt-1">
             {method === "email" ? (
-              <input
+              <Input
+                register={register("email", { required: true })}
                 id="input"
                 type="email"
                 className="w-full appearance-none rounded-md border border-gray-400 px-3 py-2 text-sm placeholder-gray-400 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500"
@@ -55,17 +70,13 @@ export default function Enter() {
               />
             ) : null}
             {method === "phone" ? (
-              <div className="flex rounded-md shadow-sm">
-                <span className="flex select-none items-center justify-center rounded-l-md border border-r-0 border-gray-500 bg-gray-50 px-2 text-sm text-gray-500">
-                  +82
-                </span>
-                <input
-                  id="input"
-                  className="w-full appearance-none rounded-md rounded-l-none border border-gray-400 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500"
-                  type="number"
-                  required
-                />
-              </div>
+              <Input
+                register={register("phone", { required: true })}
+                id="input"
+                type="number"
+                required
+                kind="phone"
+              />
             ) : null}
           </div>
           {method === "email" ? <Button text="Get login link" /> : null}
