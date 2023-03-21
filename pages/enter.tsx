@@ -1,8 +1,9 @@
 import { useState } from "react";
 import Button from "./../components/button";
 import { useForm } from "react-hook-form";
-import { cls } from "./../libs/utls";
+import { cls } from "./../libs/client/utls";
 import Input from "./../components/input";
+import useMutation from "./../libs/client/useMutation";
 
 interface EnterForm {
   email?: string;
@@ -10,6 +11,7 @@ interface EnterForm {
 }
 
 export default function Enter() {
+  const [enter, { loading, data, error }] = useMutation("/api/users/enter");
   const [submitting, setSubmitting] = useState(false);
   const { register, watch, reset, handleSubmit } = useForm<EnterForm>();
   const [method, setMethod] = useState<"email" | "phone">("email");
@@ -21,18 +23,10 @@ export default function Enter() {
     reset();
     setMethod("phone");
   };
-  const onVaild = (data: EnterForm) => {
-    setSubmitting(true);
-    fetch("/api/users/enter", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then(() => {
-      setSubmitting(false);
-    });
+  const onVaild = (validForm: EnterForm) => {
+    enter(validForm);
   };
+  console.log(loading, data, error);
   return (
     <div className="mt-16 px-4">
       <h3 className="text-center text-3xl font-bold">Enter to Carrot</h3>

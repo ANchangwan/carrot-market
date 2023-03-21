@@ -1,4 +1,4 @@
-import { cls } from "./../libs/utls";
+import { cls } from "./../libs/client/utls";
 import Link from "next/link";
 import { useRouter } from "next/router";
 

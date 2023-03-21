@@ -6,8 +6,8 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method !== "POST") {
-    res.status(200).end();
+    res.status(401).end();
   }
-  console.log(req.body.email);
+  console.log(req.body);
   res.status(200).end();
 }
