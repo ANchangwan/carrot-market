@@ -1,4 +1,4 @@
-import Layout from "./../../components/layout";
+import Layout from "@components/layout";
 function CommunityPostDetail() {
   return (
     <Layout canGoBack>

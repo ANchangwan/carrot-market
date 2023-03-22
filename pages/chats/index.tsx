@@ -1,4 +1,4 @@
-import Layout from "./../../components/layout";
+import Layout from "@components/layout";
 function Chats() {
   return (
     <Layout hasTabBar title="Chat">

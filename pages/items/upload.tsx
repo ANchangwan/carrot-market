@@ -1,5 +1,5 @@
-import Button from "./../../components/button";
-import TextArea from "./../../components/textarea";
+import Button from "@components/button";
+import TextArea from "@components/textarea";
 function Upload() {
   return (
     <div className="px-4 py-16">
