@@ -1,65 +1,46 @@
+import twilio from "twilio";
 import { NextApiRequest, NextApiResponse } from "next";
 import client from "@libs/server/client";
-import withHandler from "@libs/server/withHandle";
+import withHandler, { ResponseType } from "@libs/server/withHandle";
 
-async function handler(req: NextApiRequest, res: NextApiResponse) {
+const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
+
+async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseType>
+) {
   const { phone, email } = req.body;
-  const payload = phone ? { phone: +phone } : { email };
-  let user;
-  const token = await client.token.create({
-    data: {
-      payload: "1234",
-      user: {
-        connectOrCreate: {
-          where: {
-            ...payload,
-          },
-          create: {
-            name: "익명",
-            ...payload,
-          },
-        },
-      },
-    },
+  const user = phone ? { phone: +phone } : email ? { email } : null;
+  if (!user) return res.status(400).json({ ok: false });
+  const payload = Math.floor(100000 + Math.random() * 900000) + "";
+  // const token = await client.token.create({
+  //   data: {
+  //     payload: "1234",
+  //     user: {
+  //       connectOrCreate: {
+  //         where: {
+  //           ...user,
+  //         },
+  //         create: {
+  //           name: "익명",
+  //           ...user,
+  //         },
+  //       },
+  //     },
+  //   },
+  // });
+  if (phone) {
+    const message = await twilioClient.messages.create({
+      // messagingServiceSid: process.env.TWILIO_SID,
+      to: process.env.PHONE!,
+      from: "+14344045601",
+      body: `YOUR LOGIN TOKEN IS ${payload}`,
+    });
+    console.log(message);
+  }
+  return res.json({
+    ok: true,
   });
-  console.log(token);
-  // if (email) {
-  //   user = await client.user.findUnique({
-  //     where: {
-  //       email,
-  //     },
-  //   });
-  //   if (user) console.log("found it.");
-  //   if (!user) {
-  //     console.log("did not find");
-  //     user = await client.user.create({
-  //       data: {
-  //         name: "익명",
-  //         email,
-  //       },
-  //     });
-  //   }
-  //   console.log(user);
-  // }
-  // if (phone) {
-  //   user = await client.user.findUnique({
-  //     where: {
-  //       phone: +phone,
-  //     },
-  //   });
-  //   if (user) console.log("found it.");
-  //   if (!user) {
-  //     console.log("did not find");
-  //     user = await client.user.create({
-  //       data: {
-  //         name: "익명",
-  //         phone: +phone,
-  //       },
-  //     });
-  //   }
-  //   console.log(user);
-  // }
-  res.status(200).end();
 }
 
 export default withHandler("POST", handler);
