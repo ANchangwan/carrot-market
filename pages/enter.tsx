@@ -10,11 +10,26 @@ interface EnterForm {
   phone?: string;
 }
 
+interface TokenForm {
+  token?: string;
+}
+
+interface MutationResult {
+  ok: boolean;
+}
+
 export default function Enter() {
-  const [enter, { loading, data, error }] = useMutation("/api/users/enter");
+  const [enter, { loading, data, error }] =
+    useMutation<MutationResult>("/api/users/enter");
+  const [
+    confirmToken,
+    { loading: tokenLoading, data: tokenData, error: tokenError },
+  ] = useMutation<MutationResult>("/api/users/confirm");
   const [submitting, setSubmitting] = useState(false);
   const { register, watch, reset, handleSubmit } = useForm<EnterForm>();
   const [method, setMethod] = useState<"email" | "phone">("email");
+  const { register: tokenRegister, handleSubmit: tokenHandleSubmit } =
+    useForm<TokenForm>();
   const onEmailClick = () => {
     setMethod("email");
     reset();
@@ -26,67 +41,101 @@ export default function Enter() {
   const onVaild = (validForm: EnterForm) => {
     enter(validForm);
   };
+  const onTokenValid = (validForm: TokenForm) => {
+    if (tokenLoading) return;
+    confirmToken(validForm);
+  };
+  console.log(data);
   return (
     <div className="mt-16 px-4">
       <h3 className="text-center text-3xl font-bold">Enter to Carrot</h3>
-      <div className="mt-8">
-        <div className="flex flex-col items-center">
-          <h5 className="text-sm font-medium text-gray-500">Enter using:</h5>
-          <div className="mt-8 grid w-full grid-cols-2  gap-16">
-            <button
-              className={cls(
-                "pd-4 border-b-2 font-medium",
-                method === "email"
-                  ? "border-orange-400 text-orange-400"
-                  : "border-transparent text-gray-500"
-              )}
-              onClick={onEmailClick}
+      <div className="mt-12">
+        {data?.ok ? (
+          <form
+            onSubmit={tokenHandleSubmit(onTokenValid)}
+            className="mt-8 flex flex-col space-y-4"
+          >
+            <Input
+              register={tokenRegister("token", { required: true })}
+              label="Confirmation Token"
+              type="number"
+              required
+            />
+
+            <Button text={tokenLoading ? "Loading" : "Confirm Token"} />
+          </form>
+        ) : (
+          <>
+            <div className="flex flex-col items-center">
+              <h5 className="text-sm font-medium text-gray-500">
+                Enter using:
+              </h5>
+              <div className="mt-8 grid w-full grid-cols-2  gap-16">
+                <button
+                  className={cls(
+                    "pd-4 border-b-2 font-medium",
+                    method === "email"
+                      ? "border-orange-400 text-orange-400"
+                      : "border-transparent text-gray-500"
+                  )}
+                  onClick={onEmailClick}
+                >
+                  Email
+                </button>
+                <button
+                  className={cls(
+                    "pd-4 border-b-2 font-medium",
+                    method === "phone"
+                      ? "border-orange-400 text-orange-400"
+                      : "border-transparent text-gray-500"
+                  )}
+                  onClick={onPhoneClick}
+                >
+                  Phone
+                </button>
+              </div>
+            </div>
+            <form
+              onSubmit={handleSubmit(onVaild)}
+              className="mt-8 flex flex-col"
             >
-              Email
-            </button>
-            <button
-              className={cls(
-                "pd-4 border-b-2 font-medium",
-                method === "phone"
-                  ? "border-orange-400 text-orange-400"
-                  : "border-transparent text-gray-500"
-              )}
-              onClick={onPhoneClick}
-            >
-              Phone
-            </button>
-          </div>
-        </div>
-        <form onSubmit={handleSubmit(onVaild)} className="mt-8 flex flex-col">
-          <label htmlFor="input" className="text-sm font-medium text-gray-700">
-            {method === "email" ? "Email address" : null}
-            {method === "phone" ? "Phone number" : null}
-          </label>
-          <div className="mt-1">
-            {method === "email" ? (
-              <Input
-                register={register("email", { required: true })}
-                id="input"
-                type="email"
-                className="w-full appearance-none rounded-md border border-gray-400 px-3 py-2 text-sm placeholder-gray-400 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500"
-                required
-              />
-            ) : null}
-            {method === "phone" ? (
-              <Input
-                register={register("phone", { required: true })}
-                id="input"
-                type="number"
-                required
-                kind="phone"
-              />
-            ) : null}
-          </div>
-          {method === "email" ? <Button text="Get login link" /> : null}
-          {method === "phone" ? (
-            <Button text={submitting ? "Loading" : "Get one-time password"} />
-          ) : null}
-        </form>
+              <label
+                htmlFor="input"
+                className="text-sm font-medium text-gray-700"
+              >
+                {method === "email" ? "Email address" : null}
+                {method === "phone" ? "Phone number" : null}
+              </label>
+              <div className="mt-1">
+                {method === "email" ? (
+                  <Input
+                    register={register("email", { required: true })}
+                    id="input"
+                    type="email"
+                    className="w-full appearance-none rounded-md border border-gray-400 px-3 py-2 text-sm placeholder-gray-400 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500"
+                    required
+                  />
+                ) : null}
+                {method === "phone" ? (
+                  <Input
+                    register={register("phone", { required: true })}
+                    id="input"
+                    type="number"
+                    required
+                    kind="phone"
+                  />
+                ) : null}
+              </div>
+              {method === "email" ? <Button text="Get login link" /> : null}
+              {method === "phone" ? (
+                <Button
+                  text={submitting ? "Loading" : "Get one-time password"}
+                />
+              ) : null}
+            </form>
+          </>
+        )}
+
         <div className="mt-8">
           <div className="relative">
             <div className="borer-gray-300 absolute w-full border-t" />
