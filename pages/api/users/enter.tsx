@@ -1,7 +1,10 @@
 import twilio from "twilio";
+import mail from "@sendgrid/mail";
 import { NextApiRequest, NextApiResponse } from "next";
 import client from "@libs/server/client";
 import withHandler, { ResponseType } from "@libs/server/withHandle";
+
+mail.setApiKey(process.env.SENDGRID_API_KEY!);
 
 const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
@@ -37,7 +40,17 @@ async function handler(
       body: `YOUR LOGIN TOKEN IS ${payload}`,
     });
     console.log(message);
+  } else if (email) {
+    const email = await mail.send({
+      from: "ssdii44@naver.com",
+      to: "ssdii44@naver.com",
+      subject: "확인 메일",
+      text: `인증번호 ${payload}`,
+      html: `<strong>인증번호 ${payload}</strong>`,
+    });
+    console.log(email);
   }
+
   return res.json({
     ok: true,
   });
