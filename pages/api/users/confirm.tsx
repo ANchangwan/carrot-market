@@ -19,6 +19,7 @@ async function handler(
   const exists = await client.token.findUnique({
     where: { payload: token },
   });
+  console.log(exists, "exist");
   if (!exists) return res.status(404).end();
   req.session.user = {
     id: exists.userId,
