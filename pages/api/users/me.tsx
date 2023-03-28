@@ -1,7 +1,7 @@
-import { withIronSessionApiRoute } from "iron-session/next";
 import { NextApiRequest, NextApiResponse } from "next";
 import withHandler, { ResponseType } from "@libs/server/withHandle";
 import client from "@libs/server/client";
+import { withApiSession } from "@libs/server/withSession";
 
 declare module "iron-session" {
   interface IronsessionData {
@@ -19,7 +19,6 @@ async function handler(
     where: { id: req.session.user?.id },
   });
   const phoneString = profile.phone.toString();
-
   res.json({
     ok: true,
     ...profile,
@@ -27,8 +26,4 @@ async function handler(
   });
 }
 
-export default withIronSessionApiRoute(withHandler("GET", handler), {
-  cookieName: "carrotsession",
-  password:
-    "12345867897dfksjfnkjenfkwjnfkjnfkjnfsm,dfnwfefwefwefwefwefwefefefefesa.fejfnqkljfnwmfnsdm,fnkefnhqkj",
-});
+export default withApiSession(withHandler("GET", handler));
