@@ -3,14 +3,6 @@ import withHandler, { ResponseType } from "@libs/server/withHandle";
 import client from "@libs/server/client";
 import { withApiSession } from "@libs/server/withSession";
 
-declare module "iron-session" {
-  interface IronsessionData {
-    user?: {
-      id: number;
-    };
-  }
-}
-
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
@@ -21,9 +13,11 @@ async function handler(
   const phoneString = profile.phone.toString();
   res.json({
     ok: true,
-    ...profile,
+    profile,
     phone: Number(phoneString),
   });
 }
 
-export default withApiSession(withHandler("GET", handler));
+export default withApiSession(
+  withHandler({ method: "GET", handler, isPrivate: true })
+);
